@@ -1,88 +1,39 @@
-# Arxiv AI Agent PWA
+# Arxiv AI Agent - FastAPI Backend
 
-A Progressive Web App that uses AI agents to curate and explain the latest AI research papers from Arxiv.
+A FastAPI backend that uses AI agents to curate and explain research papers from Arxiv.
 
-## Features
+## Quick Deploy to Railway
 
-- 🤖 **3-Agent Pipeline**: Researcher → Teacher → Designer
-- 📱 **PWA**: Installable on any device
-- 🔔 **Smart Notifications**: Get notified when new papers are found
-- 💡 **Simple Explanations**: Complex research explained with analogies
-- ⏱️ **Customizable Frequency**: Control how often to check for new papers
-- 📚 **Persistent History**: All notifications saved locally
-
-## Tech Stack
-
-### Frontend
-- **Vite** - Build tool
-- **Vanilla JavaScript** - No framework overhead
-- **PWA** - Service worker for offline support
-- **Glassmorphism UI** - Modern, premium design
-
-### Backend
-- **FastAPI** - Python web framework
-- **Phidata** - Agent orchestration
-- **Arxiv API** - Research paper source
-- **Local LLM** - Llama 3.2 via Ollama (dev) / OpenAI (prod)
-
-## Local Development
-
-### Prerequisites
-- Node.js 18+
-- Python 3.11+
-- Ollama (for local LLM)
-
-### Setup
-
-1. **Install dependencies**
-```bash
-npm install
-pip install -r requirements.txt
-```
-
-2. **Start Ollama** (if using local model)
-```bash
-ollama serve
-ollama pull llama3.2
-```
-
-3. **Run backend**
-```bash
-python src/agent.py
-```
-
-4. **Run frontend**
-```bash
-npm run dev
-```
-
-5. **Open** http://localhost:5173
-
-## Deployment
-
-### Frontend (Vercel)
-```bash
-vercel --prod
-```
-
-### Backend (Railway/Render)
-- Push to GitHub
-- Connect repository to Railway/Render
-- Set environment variables (if using OpenAI)
-- Deploy
+[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/fastapi)
 
 ## Environment Variables
 
-For production deployment with OpenAI:
+Set these in Railway dashboard:
 
-```env
-OPENAI_API_KEY=your_api_key_here
+- `GROQ_API_KEY` - Your Groq API key (required)
+- `PORT` - Automatically set by Railway
+
+## Local Development
+
+```bash
+# Install dependencies
+pip install -r requirements.txt
+
+# Set environment variable
+export GROQ_API_KEY=your_key_here
+
+# Run server
+python src/agent.py
 ```
 
-## License
+## API Endpoints
 
-MIT
+- `GET /api/latest` - Get latest research notification
+- `POST /api/config` - Update research frequency
 
-## Author
+## Tech Stack
 
-Built with ❤️ using Agentic AI
+- FastAPI - Web framework
+- Phidata - Agent orchestration  
+- Groq - LLM provider
+- Arxiv API - Research papers
