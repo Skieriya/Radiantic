@@ -6,6 +6,7 @@ const navSettings = document.querySelector('#nav-settings')
 
 let notificationsEnabled = localStorage.getItem('notificationsEnabled') === 'true'
 let lastSeenHash = null;
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://127.0.0.1:8000';
 
 // Routing
 const routes = {
@@ -412,7 +413,7 @@ function renderSettings() {
     const minutes = parseInt(slider.value);
     saveBtn.textContent = "Updating...";
     try {
-      await fetch('http://127.0.0.1:8000/api/config', {
+      await fetch(`${BACKEND_URL}/api/config`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ interval_minutes: minutes })
@@ -436,7 +437,7 @@ function renderSettings() {
 
 async function fetchAgentState() {
   try {
-    const response = await fetch('http://127.0.0.1:8000/api/latest')
+    const response = await fetch(`${BACKEND_URL}/api/latest`)
     if (!response.ok) throw new Error('Backend offline');
     return await response.json();
   } catch (error) {
