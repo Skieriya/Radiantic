@@ -1,16 +1,2 @@
-# Railway FastAPI Template Configuration
-# This file tells Railway how to deploy your FastAPI app
-
-[build]
-builder = "NIXPACKS"
-
 [deploy]
 startCommand = "uvicorn src.agent:app --host 0.0.0.0 --port $PORT"
-healthcheckPath = "/api/latest"
-healthcheckTimeout = 100
-restartPolicyType = "ON_FAILURE"
-restartPolicyMaxRetries = 10
-
-[env]
-# Environment variables will be set in Railway dashboard
-# GROQ_API_KEY = "your-key-here"
