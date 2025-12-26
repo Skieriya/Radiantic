@@ -11,7 +11,18 @@ from fastapi.middleware.cors import CORSMiddleware
 warnings.filterwarnings("ignore", category=RuntimeWarning, module="phi.tools.duckduckgo")
 
 app = FastAPI()
-app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "https://radiantic.vercel.app",
+        "http://localhost:5173",
+        "https://fastapi-production-531a.up.railway.app",
+        "*"
+    ],
+    allow_credentials=True,
+    allow_methods=["GET", "POST", "OPTIONS"],
+    allow_headers=["*"],
+)
 
 # Groq API Key (MUST be set via environment variable)
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
