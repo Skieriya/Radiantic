@@ -6,7 +6,9 @@ const navSettings = document.querySelector('#nav-settings')
 
 let notificationsEnabled = localStorage.getItem('notificationsEnabled') === 'true'
 let lastSeenHash = null;
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://127.0.0.1:8000';
+const BACKEND_URL = import.meta.env.PROD
+  ? 'https://fastapi-production-531a.up.railway.app'
+  : (import.meta.env.VITE_BACKEND_URL || 'http://127.0.0.1:8000');
 
 // Routing
 const routes = {
