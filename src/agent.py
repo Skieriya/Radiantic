@@ -26,7 +26,7 @@ app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], all
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 if not GROQ_API_KEY:
     raise ValueError("GROQ_API_KEY environment variable is required. Set it in Railway or your .env file")
-MODEL_ID = "llama-3.3-70b-versatile"  # Latest and powerful Groq model
+MODEL_ID = "llama-3.1-8b-instant"  # High TPM limit, fast and free on Groq
 
 # --- AGENT 1: THE RESEARCHER (Updated to use Groq) ---
 researcher = Agent(
