@@ -32,19 +32,18 @@ MODEL_ID = "llama-3.1-8b-instant"  # High TPM limit, fast and free on Groq
 researcher = Agent(
     name="Researcher",
     model=Groq(id=MODEL_ID, api_key=GROQ_API_KEY),
-    tools=[ArxivToolkit(read_arxiv_papers=True)], 
+    tools=[ArxivToolkit()], # Disabling read_arxiv_papers to avoid token blowout
     instructions=[
         "You are an academic researcher.",
         "Search arxiv for the most significant AI paper from the last 7 days.",
-        "Crucial: Read the actual paper content if available, not just the abstract.",
-        "Return a COMPREHENSIVE report (min 400 words) containing:",
+        "Crucial: Use the metadata and abstract provided by the search tool. Do NOT attempt to read the full PDF content to avoid token limits.",
+        "Return a COMPREHENSIVE report containing:",
         "1. Full Title",
         "2. Arxiv PDF Link (Must be a valid URL starts with http)",
         "3. Detailed Abstract",
-        "4. In-depth Methodology",
-        "5. Quantitative Results",
-        "CRITICAL: Any numeric parameters (like max_results or num_articles) MUST be passed as numbers, NOT strings.",
-        "CRITICAL: If you use a tool to search, get the ID list first, then call read_arxiv_papers with those IDs if needed. Don't use placeholder IDs like 'searched_id'.",
+        "4. Key Contributions & Methodology (based on abstract)",
+        "5. Potential Impact",
+        "CRITICAL: Any numeric parameters (like max_results) MUST be passed as numbers, NOT strings.",
         "CRITICAL: Return ONLY the content. Start directly with the Title."
     ]
 )
@@ -104,8 +103,8 @@ async def run_agent_team():
             # Step 1: Research
             state["status"] = "🔍 Agent 1: Scanning Arxiv..."
             
-            # Explicitly instructing to use integers for numeric parameters
-            news_res = researcher.run("Find the most significant AI research paper from the last 7 days. Provide a detailed summary.")
+            # Explicitly instructing to use integers for numeric parameters and focus on abstracts
+            news_res = researcher.run("Search Arxiv for the top 3 most significant AI research papers from the last 7 days. Summarize the best one based on its abstract.")
             state["news"] = news_res.content
             
             # Helper to extract link
