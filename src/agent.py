@@ -43,6 +43,7 @@ researcher = Agent(
         "3. Detailed Abstract",
         "4. In-depth Methodology",
         "5. Quantitative Results",
+        "CRITICAL: Any numeric parameters (like max_results or num_articles) MUST be passed as numbers, NOT strings.",
         "CRITICAL: If you use a tool to search, get the ID list first, then call read_arxiv_papers with those IDs if needed. Don't use placeholder IDs like 'searched_id'.",
         "CRITICAL: Return ONLY the content. Start directly with the Title."
     ]
@@ -103,8 +104,8 @@ async def run_agent_team():
             # Step 1: Research
             state["status"] = "🔍 Agent 1: Scanning Arxiv..."
             
-            # Explicitly instructing to use the tool correctly
-            news_res = researcher.run("Search arxiv for the latest AI research papers released in the last 2 days. Pick one very interesting paper, get its Arxiv ID, and then explain it deeply.")
+            # Explicitly instructing to use integers for numeric parameters
+            news_res = researcher.run("Find the most significant AI research paper from the last 7 days. Provide a detailed summary.")
             state["news"] = news_res.content
             
             # Helper to extract link
