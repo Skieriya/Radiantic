@@ -22,14 +22,8 @@ warnings.filterwarnings("ignore", category=RuntimeWarning, module="phi.tools.duc
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "https://radiantic.vercel.app",
-        "http://localhost:5173",
-        "https://fastapi-production-531a.up.railway.app",
-        "*"
-    ],
-    allow_credentials=True,
-    allow_methods=["GET", "POST", "OPTIONS"],
+    allow_origins=["*"],
+    allow_methods=["*"],
     allow_headers=["*"],
 )
 
