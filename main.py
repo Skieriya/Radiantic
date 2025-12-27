@@ -154,7 +154,7 @@ async def startup():
 
 @app.get("/")
 async def root():
-    return {"message": "Arxiv AI Agent Backend is Running!"}
+    return {"message": "AI_AGENT_IS_LIVE_ON_RAILWAY", "status": "Ready"}
 
 @app.get("/api/latest")
 async def get_latest():
