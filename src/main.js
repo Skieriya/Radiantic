@@ -7,8 +7,8 @@ const navSettings = document.querySelector('#nav-settings')
 let notificationsEnabled = localStorage.getItem('notificationsEnabled') === 'true'
 let lastSeenHash = null;
 const BACKEND_URL = import.meta.env.PROD
-  ? 'https://fastapi-production-3abf.up.railway.app'
-  : (import.meta.env.VITE_BACKEND_URL || 'http://127.0.0.1:8000');
+  ? '/backend'
+  : (import.meta.env.VITE_BACKEND_URL || 'http://127.0.0.1:8000/api');
 
 // Routing
 const routes = {
@@ -415,7 +415,7 @@ function renderSettings() {
     const minutes = parseInt(slider.value);
     saveBtn.textContent = "Updating...";
     try {
-      await fetch(`${BACKEND_URL}/api/config`, {
+      await fetch(`${BACKEND_URL}/config`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ interval_minutes: minutes })
@@ -439,7 +439,7 @@ function renderSettings() {
 
 async function fetchAgentState() {
   try {
-    const response = await fetch(`${BACKEND_URL}/api/latest`)
+    const response = await fetch(`${BACKEND_URL}/latest`)
     if (!response.ok) throw new Error('Backend offline');
     return await response.json();
   } catch (error) {
