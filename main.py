@@ -6,6 +6,15 @@ from phi.model.groq import Groq
 from phi.tools.arxiv_toolkit import ArxivToolkit
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+import ssl
+
+# Fix for SSL: CERTIFICATE_VERIFY_FAILED
+try:
+    _create_unverified_https_context = ssl._create_unverified_context
+except AttributeError:
+    pass
+else:
+    ssl._create_default_https_context = _create_unverified_https_context
 
 # Silence the DDGS library renaming warnings
 warnings.filterwarnings("ignore", category=RuntimeWarning, module="phi.tools.duckduckgo")
@@ -41,10 +50,11 @@ researcher = Agent(
         "Crucial: Read the actual paper content if available, not just the abstract.",
         "Return a COMPREHENSIVE report (min 400 words) containing:",
         "1. Full Title",
-        "2. Arxiv PDF Link (Must be a valid URL)",
+        "2. Arxiv PDF Link (Must be a valid URL starts with http)",
         "3. Detailed Abstract",
         "4. In-depth Methodology",
         "5. Quantitative Results",
+        "CRITICAL: If you use a tool to search, get the ID list first, then call read_arxiv_papers with those IDs if needed. Don't use placeholder IDs like 'searched_id'.",
         "CRITICAL: Return ONLY the content. Start directly with the Title."
     ]
 )
@@ -104,8 +114,8 @@ async def run_agent_team():
             # Step 1: Research
             state["status"] = "🔍 Agent 1: Scanning Arxiv..."
             
-            # Explicitly instructing to use the tool
-            news_res = researcher.run("Use the search_arxiv_papers tool to find the latest AI paper about 'LLM Agents'. Read it and summarize it.")
+            # Explicitly instructing to use the tool correctly
+            news_res = researcher.run("Search arxiv for the latest AI research papers released in the last 2 days. Pick one very interesting paper, get its Arxiv ID, and then explain it deeply.")
             state["news"] = news_res.content
             
             # Helper to extract link
