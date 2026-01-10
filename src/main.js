@@ -109,30 +109,13 @@ function saveHistory(history) {
 let pollInterval = null;
 
 function startPolling(updateCallback) {
-  if (pollInterval) clearTimeout(pollInterval);
-
-  async function poll() {
-    const state = await updateCallback();
-
-    // Default: Check every 10 seconds while working
-    let nextWait = 10000;
-
-    // If sleeping, wait the full interval (minus 10s buffer)
-    if (state && (state.status.includes('Sleeping') || state.status.includes('Cycle Complete'))) {
-      const minutes = state.interval_minutes || 5;
-      nextWait = (minutes * 60 * 1000) - 10000;
-      if (nextWait < 10000) nextWait = 10000;
-      console.log(`Agent is sleeping. Next poll in ${nextWait / 1000}s`);
-    }
-
-    pollInterval = setTimeout(poll, nextWait);
-  }
-
-  poll();
+  if (pollInterval) clearInterval(pollInterval);
+  updateCallback(); // Immediate run
+  pollInterval = setInterval(updateCallback, 10000); // Poll every 10 seconds
 }
 
 function stopPolling() {
-  if (pollInterval) clearTimeout(pollInterval);
+  if (pollInterval) clearInterval(pollInterval);
 }
 
 // Shared Header Component
