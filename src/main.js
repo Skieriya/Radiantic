@@ -1,5 +1,7 @@
 import './style.css'
 
+document.title = "Arxiv AI Agent";
+
 const app = document.querySelector('#app')
 const navHome = document.querySelector('#nav-home')
 const navSettings = document.querySelector('#nav-settings')
