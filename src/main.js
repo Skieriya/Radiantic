@@ -10,6 +10,8 @@ const BACKEND_URL = import.meta.env.PROD
   ? '/backend'
   : (import.meta.env.VITE_BACKEND_URL || 'http://127.0.0.1:8000/api');
 
+let currentInterval = localStorage.getItem('researchInterval') || 5;
+
 // Routing
 const routes = {
   '/': renderHome,
@@ -150,12 +152,12 @@ const getHeaderHTML = () => `
 
     <!-- Right: Install Button -->
     <div style="flex: 1; display: flex; justify-content: flex-end;">
-        <button 
-            id="install-btn" 
-            class="btn" 
+        <button
+            id="install-btn"
+            class="btn"
             style="
-                display: none; 
-                padding: 10px 20px; 
+                display: none;
+                padding: 10px 20px;
                 font-size: 0.9rem;
                 width: auto;
                 margin: 0;
@@ -175,7 +177,7 @@ const getHeaderHTML = () => `
 async function renderHome() {
   app.innerHTML = `
     ${getHeaderHTML()}
-    
+
     <div style="max-width: 900px; margin: 0 auto; width: 100%;">
         <div id="status-card" class="card">
              <div style="display:flex; align-items:center; gap:10px;">
@@ -186,7 +188,7 @@ async function renderHome() {
                 </div>
              </div>
         </div>
-    
+
         <div id="timeline-list">
             <!-- New notifications appear here -->
         </div>
@@ -248,26 +250,26 @@ function renderTimeline(history) {
             <div class="date-header">
                 ${item.date || 'Today'} • ${timeDisplay}
             </div>
-            
+
             <div class="card collapsed-card" onclick="this.classList.toggle('expanded')">
                 <div class="card-header">
                     <div class="ai-badge">✨ Insight</div>
                     <div style="font-weight:700; font-size:1.1rem; line-height:1.4;">${item.notification}</div>
                     <div class="expand-hint">Tap to expand</div>
                 </div>
-                
+
                 <div class="card-body">
                     <div class="analogy-section">
                         <h3 style="color:#f59e0b; margin-top:0;">💡 The Simple Explanation</h3>
                         <p>${item.analogy}</p>
                     </div>
-                    
+
                     <div class="source-section" style="margin-top:20px; padding-top:20px; border-top:1px solid var(--glass-border);">
                          <h4 style="color:var(--text-muted); font-size:0.9rem;">ORIGINAL RESEARCH</h4>
                          <div style="font-size:0.85rem; color:var(--text-muted); max-height:100px; overflow:hidden; margin-bottom:15px;">
                              ${item.news ? item.news.substring(0, 300) : ''}...
                          </div>
-                         
+
                          <a href="${item.link}" target="_blank" class="btn full-read-btn" onclick="event.stopPropagation()">
                             📖 Full Read (PDF)
                          </a>
@@ -287,6 +289,12 @@ function updateHomeUI(state) {
 
   // Update Status
   statusEl.textContent = state.status;
+
+  // Sync interval if backend sends it
+  if (state.interval_minutes) {
+    currentInterval = state.interval_minutes;
+    localStorage.setItem('researchInterval', currentInterval);
+  }
   if (state.status === 'Sleeping' || state.status === 'Success' || state.status.includes('Cycle Complete') || state.status.includes('Limited')) {
     spinner.style.borderTopColor = '#10b981'; // Green for sleeping/done
     spinner.style.animation = 'none';
@@ -356,9 +364,9 @@ function renderSettings() {
             <p style="color:var(--text-muted); font-size:0.9rem;">How often should the agent look for new papers?</p>
             
             <div style="margin-top:20px;">
-                <input type="range" id="interval-slider" min="1" max="60" value="5" style="width:100%;">
+                <input type="range" id="interval-slider" min="1" max="60" value="${currentInterval}" style="width:100%;">
                 <div style="display:flex; justify-content:space-between; margin-top:10px;">
-                    <span style="font-weight:700; color:var(--primary);"><span id="interval-val">5</span> Minutes</span>
+                    <span style="font-weight:700; color:var(--primary);"><span id="interval-val">${currentInterval}</span> Minutes</span>
                 </div>
             </div>
             
@@ -420,6 +428,8 @@ function renderSettings() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ interval_minutes: minutes })
       });
+      currentInterval = minutes;
+      localStorage.setItem('researchInterval', minutes);
       saveBtn.textContent = "✅ Updated!";
       setTimeout(() => saveBtn.textContent = "Update Frequency", 2000);
     } catch (e) {

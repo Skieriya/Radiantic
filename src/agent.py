@@ -84,7 +84,8 @@ state = {
     "analogy": "Waiting for news...",
     "notification": "Standby...",
     "status": "Idle",
-    "date": "Today"
+    "date": "Today",
+    "interval_minutes": 5
 }
 
 # Default to 5 minutes
@@ -157,9 +158,10 @@ async def get_latest():
 
 @app.post("/api/config")
 async def set_config(config: Config):
-    global UPDATE_INTERVAL
+    global UPDATE_INTERVAL, state
     # Update global interval (convert minutes to seconds)
     UPDATE_INTERVAL = config.interval_minutes * 60
+    state["interval_minutes"] = config.interval_minutes
     return {"message": "Interval updated", "interval_seconds": UPDATE_INTERVAL}
 
 if __name__ == "__main__":
