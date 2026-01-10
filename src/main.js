@@ -111,7 +111,7 @@ let pollInterval = null;
 function startPolling(updateCallback) {
   if (pollInterval) clearInterval(pollInterval);
   updateCallback(); // Immediate run
-  pollInterval = setInterval(updateCallback, 2000);
+  pollInterval = setInterval(updateCallback, 10000); // Poll every 10 seconds
 }
 
 function stopPolling() {
