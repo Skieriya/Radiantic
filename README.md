@@ -1,4 +1,4 @@
-# Arxiv AI Agent - FastAPI Backend
+# Radiantic
 
 A FastAPI backend that uses AI agents to curate and explain research papers from Arxiv.
 
