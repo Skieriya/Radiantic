@@ -2,7 +2,7 @@
     "rewrites": [
         {
             "source": "/backend/:path*",
-            "destination": "https://fastapi-production-3abf.up.railway.app/api/:path*"
+            "destination": "https://radiantic-agent.onrender.com/:path*"
         }
     ]
 }
