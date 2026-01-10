@@ -154,7 +154,7 @@ async def startup():
 
 @app.get("/")
 async def root():
-    return {"message": "AI_AGENT_IS_LIVE_ON_RAILWAY", "status": "Ready"}
+    return {"message": "AI_AGENT_IS_LIVE_ON_RENDER", "status": "Ready"}
 
 @app.get("/api/latest")
 async def get_latest():

@@ -147,6 +147,10 @@ async def run_agent_team():
 async def startup():
     asyncio.create_task(run_agent_team())
 
+@app.get("/")
+async def root():
+    return {"message": "AI_AGENT_IS_LIVE_ON_RENDER", "status": "Ready"}
+
 @app.get("/api/latest")
 async def get_latest():
     return state

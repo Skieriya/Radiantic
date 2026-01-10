@@ -2,7 +2,7 @@
     "rewrites": [
         {
             "source": "/backend/:path*",
-            "destination": "https://radiantic-agent.onrender.com/:path*"
+            "destination": "https://radiantic-agent.onrender.com/api/:path*"
         }
     ]
 }
