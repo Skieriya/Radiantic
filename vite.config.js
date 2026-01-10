@@ -10,8 +10,8 @@ export default defineConfig({
                 globPatterns: ['**/*.{js,css,html,webp,png,svg}']
             },
             manifest: {
-                name: 'Arxiv AI Agent',
-                short_name: 'ArxivAI',
+                name: 'Radiantic',
+                short_name: 'Radiantic',
                 description: 'AI-curated CS Research Papers',
                 theme_color: '#0f172a',
                 background_color: '#0f172a',

@@ -1,6 +1,6 @@
 import './style.css'
 
-document.title = "Arxiv AI Agent";
+document.title = "Radiantic";
 
 const app = document.querySelector('#app')
 const navHome = document.querySelector('#nav-home')
